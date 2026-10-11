@@ -23,14 +23,6 @@ color:white;
 overflow-x:hidden;
 }
 
-section{
-padding:80px 20px;
-}
-
-h1,h2,h3{
-text-align:center;
-}
-
 #boot{
 height:100vh;
 display:flex;
@@ -40,25 +32,28 @@ background:#000;
 }
 
 .terminal{
-max-width:800px;
+max-width:600px;
+width:90%;
 font-family:Consolas,monospace;
 color:#00ff88;
-font-size:1.3rem;
-line-height:1.8;
-padding:40px;
+font-size:1rem;
+line-height:1.6;
+padding:30px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
 }
 
 .boot-line {
-margin: 10px 0;
-min-height: 25px;
-}
-
-.boot-line.hidden {
+margin: 6px 0;
+min-height: 20px;
 opacity: 0;
 }
 
 .boot-line.visible {
-animation: typewriter 0.5s ease-out forwards;
+animation: typewriter 0.4s ease-out forwards;
 }
 
 @keyframes typewriter {
@@ -71,17 +66,18 @@ animation: typewriter 0.5s ease-out forwards;
 }
 
 .boot-progress {
-margin-top: 30px;
+margin-top: 25px;
+width: 100%;
 }
 
 .progress-bar {
-width: 300px;
-height: 25px;
+width: 250px;
+height: 20px;
 background: #111;
 border: 2px solid #00ff88;
 border-radius: 5px;
 overflow: hidden;
-margin: 15px 0;
+margin: 12px auto;
 }
 
 .progress-fill {
@@ -94,22 +90,28 @@ transition: width 0.1s linear;
 
 .progress-text {
 color: #00ff88;
-font-size: 0.9rem;
-margin-top: 10px;
+font-size: 0.8rem;
+margin-top: 8px;
 }
 
 .unlock-btn{
-padding:20px 50px;
+padding:16px 40px;
 border:3px solid #ffb300;
 border-radius:12px;
 cursor:pointer;
-font-size:24px;
+font-size:18px;
 font-weight:700;
 background:#ffb300;
 color:#111;
-margin-top:40px;
+margin-top:25px;
 transition: all 0.3s ease;
 box-shadow: 0 0 20px rgba(255, 179, 0, 0.5);
+animation: pulse 1s ease-in-out infinite;
+opacity: 0;
+}
+
+.unlock-btn.show {
+opacity: 1;
 animation: pulse 1s ease-in-out infinite;
 }
 
@@ -137,6 +139,10 @@ animation: pulse-hover 0.6s ease-in-out infinite;
     transform: scale(1.15);
     box-shadow: 0 0 50px rgba(255, 179, 0, 1), 0 0 100px rgba(255, 179, 0, 0.8);
   }
+}
+
+.unlock-btn:active {
+transform: scale(0.95);
 }
 
 #app{
@@ -316,6 +322,25 @@ margin-top:10px;
 margin:20px 0;
 }
 
+.btn {
+padding:15px 30px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:18px;
+font-weight:700;
+background:#ffb300;
+color:#111;
+margin-top:25px;
+transition: all 0.3s ease;
+box-shadow: 0 0 10px rgba(255, 179, 0, 0.3);
+}
+
+.btn:hover {
+transform: scale(1.05);
+box-shadow: 0 0 20px rgba(255, 179, 0, 0.6);
+}
+
 .easter{
 position:fixed;
 top:50%;
@@ -344,6 +369,11 @@ font-size:3rem;
 font-size:2rem;
 }
 
+.terminal {
+font-size: 0.85rem;
+padding: 20px;
+}
+
 }
 
 </style>
@@ -355,14 +385,14 @@ font-size:2rem;
 
 <div class="terminal">
 
-<p class="boot-line hidden">BOOTING MARCIN OS 50.0...</p>
-<p class="boot-line hidden">Checking age...</p>
-<p class="boot-line hidden">Age Detected: 50</p>
-<p class="boot-line hidden">Loading:</p>
-<p class="boot-line hidden">✅ doświadczenie</p>
-<p class="boot-line hidden">✅ cierpliwość</p>
-<p class="boot-line hidden">✅ imprezowe historie</p>
-<p class="boot-line hidden" style="color:gold">LEGENDARY USER FOUND</p>
+<p class="boot-line">BOOTING MARCIN OS 50.0...</p>
+<p class="boot-line">Checking age...</p>
+<p class="boot-line">Age Detected: 50</p>
+<p class="boot-line">Loading:</p>
+<p class="boot-line">✅ doświadczenie</p>
+<p class="boot-line">✅ cierpliwość</p>
+<p class="boot-line">✅ imprezowe historie</p>
+<p class="boot-line" style="color:gold">LEGENDARY USER FOUND</p>
 
 <div class="boot-progress">
   <div class="progress-bar">
@@ -371,11 +401,8 @@ font-size:2rem;
   <div class="progress-text" id="progressText">0%</div>
 </div>
 
-<p class="boot-line hidden" style="color:gold; margin-top: 30px;">SYSTEM READY</p>
-
 <button class="unlock-btn" id="startBtn">
-🔓 ODBLOKUJ LEGENDĘ 🔓<br>
-<span style="font-size: 16px; display: block; margin-top: 8px;">↓ KLIKNIJ MNIE ↓</span>
+🔓 ODBLOKUJ LEGENDĘ 🔓
 </button>
 
 </div>
@@ -558,6 +585,7 @@ Na to nie ma patcha.
 const bootLines = document.querySelectorAll('.boot-line');
 const progressBar = document.querySelector('.progress-fill');
 const progressText = document.getElementById('progressText');
+const unlockBtn = document.getElementById('startBtn');
 let bootComplete = false;
 
 function startBootSequence() {
@@ -567,23 +595,27 @@ function startBootSequence() {
   // Show lines one by one
   const lineInterval = setInterval(() => {
     if (lineIndex < bootLines.length) {
-      bootLines[lineIndex].classList.remove('hidden');
       bootLines[lineIndex].classList.add('visible');
       lineIndex++;
       
       // Simulate progress
-      progress = Math.min(progress + 15, 95);
+      progress = Math.min(progress + (85 / bootLines.length), 85);
       progressBar.style.width = progress + '%';
-      progressText.textContent = progress + '%';
+      progressText.textContent = Math.round(progress) + '%';
     } else {
       clearInterval(lineInterval);
       
-      // Complete progress
-      progress = 100;
-      progressBar.style.width = progress + '%';
-      progressText.textContent = progress + '%';
-      
-      bootComplete = true;
+      // Complete progress to 100%
+      setTimeout(() => {
+        progressBar.style.width = '100%';
+        progressText.textContent = '100%';
+        
+        // Show button after progress completes
+        setTimeout(() => {
+          unlockBtn.classList.add('show');
+          bootComplete = true;
+        }, 300);
+      }, 500);
     }
   }, 400);
 }
