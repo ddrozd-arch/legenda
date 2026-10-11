@@ -6,10 +6,9 @@
 
 <title>🎉 Marcin 50 - Level Unlocked</title>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js">\</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
 <style>
-
 
 *{
 margin:0;
@@ -49,16 +48,95 @@ line-height:1.8;
 padding:40px;
 }
 
-.btn{
-padding:15px 30px;
-border:none;
+.boot-line {
+margin: 10px 0;
+min-height: 25px;
+}
+
+.boot-line.hidden {
+opacity: 0;
+}
+
+.boot-line.visible {
+animation: typewriter 0.5s ease-out forwards;
+}
+
+@keyframes typewriter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.boot-progress {
+margin-top: 30px;
+}
+
+.progress-bar {
+width: 300px;
+height: 25px;
+background: #111;
+border: 2px solid #00ff88;
+border-radius: 5px;
+overflow: hidden;
+margin: 15px 0;
+}
+
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, #00ff88, #00cc66);
+width: 0%;
+animation: none;
+transition: width 0.1s linear;
+}
+
+.progress-text {
+color: #00ff88;
+font-size: 0.9rem;
+margin-top: 10px;
+}
+
+.unlock-btn{
+padding:20px 50px;
+border:3px solid #ffb300;
 border-radius:12px;
 cursor:pointer;
-font-size:18px;
+font-size:24px;
 font-weight:700;
 background:#ffb300;
 color:#111;
-margin-top:25px;
+margin-top:40px;
+transition: all 0.3s ease;
+box-shadow: 0 0 20px rgba(255, 179, 0, 0.5);
+animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(255, 179, 0, 0.5), 0 0 40px rgba(255, 179, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px rgba(255, 179, 0, 0.8), 0 0 60px rgba(255, 179, 0, 0.5);
+  }
+}
+
+.unlock-btn:hover {
+animation: pulse-hover 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse-hover {
+  0%, 100% {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(255, 179, 0, 0.9), 0 0 80px rgba(255, 179, 0, 0.6);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 50px rgba(255, 179, 0, 1), 0 0 100px rgba(255, 179, 0, 0.8);
+  }
 }
 
 #app{
@@ -183,7 +261,7 @@ border-radius:999px;
 overflow:hidden;
 }
 
-.progress-fill{
+.progress-fill-bar{
 width:50%;
 height:100%;
 background:linear-gradient(90deg,#00e676,#4caf50);
@@ -277,17 +355,27 @@ font-size:2rem;
 
 <div class="terminal">
 
-<p>BOOTING MARCIN OS 50.0...</p>
-<p>Checking age...</p>
-<p>Age Detected: 50</p>
-<p>Loading:</p>
-<p>✅ doświadczenie</p>
-<p>✅ cierpliwość</p>
-<p>✅ imprezowe historie</p>
-<p style="color:gold">LEGENDARY USER FOUND</p>
+<p class="boot-line hidden">BOOTING MARCIN OS 50.0...</p>
+<p class="boot-line hidden">Checking age...</p>
+<p class="boot-line hidden">Age Detected: 50</p>
+<p class="boot-line hidden">Loading:</p>
+<p class="boot-line hidden">✅ doświadczenie</p>
+<p class="boot-line hidden">✅ cierpliwość</p>
+<p class="boot-line hidden">✅ imprezowe historie</p>
+<p class="boot-line hidden" style="color:gold">LEGENDARY USER FOUND</p>
 
-<button class="btn" id="startBtn">
-ODBLOKUJ LEGENDĘ
+<div class="boot-progress">
+  <div class="progress-bar">
+    <div class="progress-fill"></div>
+  </div>
+  <div class="progress-text" id="progressText">0%</div>
+</div>
+
+<p class="boot-line hidden" style="color:gold; margin-top: 30px;">SYSTEM READY</p>
+
+<button class="unlock-btn" id="startBtn">
+🔓 ODBLOKUJ LEGENDĘ 🔓<br>
+<span style="font-size: 16px; display: block; margin-top: 8px;">↓ KLIKNIJ MNIE ↓</span>
 </button>
 
 </div>
@@ -297,8 +385,6 @@ ODBLOKUJ LEGENDĘ
 <div id="app">
 
 <section class="hero">
-
-assets/hero.jpg
 
 <h1>🎉 LEVEL 50 UNLOCKED 🎉</h1>
 
@@ -330,7 +416,7 @@ Historie
 <h2>Pasek życia</h2>
 
 <div class="progress-wrap">
-<div class="progress-fill"></div>
+<div class="progress-fill-bar"></div>
 </div>
 
 <p>50% ukończone. Najlepsze bugi dopiero przed Tobą.</p>
@@ -352,7 +438,7 @@ Historie
 
 <div class="card">
 <h3>Marcin 20 lat</h3>
-<p>„Nigdy nie będę narzekał na plecy”.</p>
+<p>„Nigdy nie będę narzekał na plecy".</p>
 <p><b>HAHAHAHAHAHA.</b></p>
 </div>
 
@@ -404,15 +490,6 @@ Historie
 <h2 style="margin-bottom:40px">📸 Galeria Legendy</h2>
 
 <div class="gallery-grid">
-
-assets/photo1.jpg
-assets/photo2.jpg
-assets/photo3.jpg
-assets/photo4.jpg
-assets/photo5.jpg
-assets/photo6.jpg
-assets/photo7.jpg
-assets/photo8.jpg
 
 </div>
 
@@ -476,6 +553,45 @@ Na to nie ma patcha.
 </div>
 
 <script>
+
+// Boot sequence
+const bootLines = document.querySelectorAll('.boot-line');
+const progressBar = document.querySelector('.progress-fill');
+const progressText = document.getElementById('progressText');
+let bootComplete = false;
+
+function startBootSequence() {
+  let lineIndex = 0;
+  let progress = 0;
+  
+  // Show lines one by one
+  const lineInterval = setInterval(() => {
+    if (lineIndex < bootLines.length) {
+      bootLines[lineIndex].classList.remove('hidden');
+      bootLines[lineIndex].classList.add('visible');
+      lineIndex++;
+      
+      // Simulate progress
+      progress = Math.min(progress + 15, 95);
+      progressBar.style.width = progress + '%';
+      progressText.textContent = progress + '%';
+    } else {
+      clearInterval(lineInterval);
+      
+      // Complete progress
+      progress = 100;
+      progressBar.style.width = progress + '%';
+      progressText.textContent = progress + '%';
+      
+      bootComplete = true;
+    }
+  }, 400);
+}
+
+// Start boot sequence when page loads
+window.addEventListener('load', () => {
+  startBootSequence();
+});
 
 const facts = [
 "Marcin pamięta internet który wydawał dźwięki.",
